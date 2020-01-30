@@ -22,72 +22,92 @@ class S3DB {
     });
   }
 
-  create(data) {
+
+  async create(table, data) {
+
+    // get the current data
+    const curdata = await this.curData(table);
 
     // generate a new id
-    var dt = new Date();
-    var now = dt.getFullYear() + ("0" + (dt.getMonth() + 1)).slice(-2) + ("0" + dt.getDate()).slice(-2);
-    var id = now + '-' + Math.floor(Math.random() * Math.floor(99999));
-    // data.data.id = id;
+    const id = this.generateId();
+    data._id = id;
 
-    var params = {
-      ACL: 'public-read',
-      Key: this.s3_folder + '/entries/' + id + '.json',
-      Body: JSON.stringify(data), // save as array, needed for file_concat
-      ContentType: 'application/json'
-    };
+    // add the new data
+    curdata.push(data);
 
-    this.s3Bucket.putObject(params, (error, data) => {
-      if (error) console.log(error);
-
-      this.combineFiles();
-
-    });
+    // save
+    return await this.save(table, curdata);
 
   }
 
-  /* list the entries in the bucket */
-  async listFiles() {
+  async update(table, data) {
+
+    // get the current data
+    const curdata = await this.curData(table);
+    const id = data._id;
+
+    // get array key based on _id
+    const index = curdata.findIndex(x => x._id === id);
+
+    curdata[index] = data;
+
+    // save
+    return await this.save(table, curdata);
+
+  }
+
+  async delete(table, id) {
+
+    // get the current data
+    const curdata = await this.curData(table);
+
+    // get array key based on _id
+    const index = curdata.findIndex(x => x._id === id);
+
+    curdata.splice(index, 1);
+
+    // save
+    return await this.save(table, curdata);
+
+  }
+
+
+  async curData(table) {
 
     var params = {
       Bucket: this.s3_bucket,
-      Delimiter: '/',
-      Prefix: this.s3_folder + '/entries/'
-    }
+      Key: this.s3_folder + '/' + table + '.json'
+    };
 
-
-
-    return await this.s3Bucket.listObjects(params).promise();
+    return await this.s3Bucket.getObject(params).promise()
+      .then(function(data) {
+        return JSON.parse(data.Body.toString('utf-8'))
+      })
+      .catch(function(error) {
+        return []
+      })
 
   }
 
+  async save(table, data) {
 
-  async combineFiles() {
-
-    var files = await this.listFiles();
-    var array = [];
-
-    for (var file of files.Contents) {
-
-      var params = {
-        Bucket: this.s3_bucket, // your bucket name,
-        Key: file.Key // path to the object you're looking for
-      }
-
-      var item = await this.s3Bucket.getObject(params).promise();
-      array.push(JSON.parse(item.Body.toString('utf-8')));
-
-    }
-
+    // save
     var params = {
       ACL: 'public-read',
-      Key: this.s3_folder + '/entries.json',
-      Body: JSON.stringify(array), // save as array, needed for file_concat
+      Key: this.s3_folder + '/' + table + '.json',
+      Body: JSON.stringify(data),
       ContentType: 'application/json'
     };
 
     return await this.s3Bucket.putObject(params).promise();
 
+  }
+
+  generateId() {
+    var dt = new Date();
+    var now = dt.getFullYear() + ("0" + (dt.getMonth() + 1)).slice(-2) + ("0" + dt.getDate()).slice(-2);
+    var id = now + '-' + Math.floor(Math.random() * Math.floor(99999));
+    return id;
   }
 
 }
