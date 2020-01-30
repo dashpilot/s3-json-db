@@ -36,7 +36,9 @@ class S3DB {
     curdata.push(data);
 
     // save
-    return await this.save(table, curdata);
+    await this.save(table, curdata);
+
+    return id;
 
   }
 
