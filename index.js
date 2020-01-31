@@ -3,10 +3,10 @@ const AWS = require('aws-sdk')
 class S3DB {
 
   constructor(s3_key, s3_secret, s3_bucket, s3_folder) {
-    this.s3_key = s3_key;
-    this.s3_secret = s3_secret;
-    this.s3_bucket = s3_bucket;
-    this.s3_folder = s3_folder;
+    this.s3_key = s3_key
+    this.s3_secret = s3_secret
+    this.s3_bucket = s3_bucket
+    this.s3_folder = s3_folder
 
     // Amazon S3
     AWS.config.update({
@@ -23,53 +23,54 @@ class S3DB {
   }
 
 
-  async create(table, data) {
+  async insert(table, data) {
 
     // get the current data
-    const curdata = await this.curData(table);
+    const curdata = await this.curData(table)
 
     // generate a new id
-    const id = this.generateId();
-    data._id = id;
+    const id = this.generateId()
+    data._id = id
 
     // add the new data
-    curdata.push(data);
+    curdata.push(data)
 
     // save
-    await this.save(table, curdata);
+    await this.save(table, curdata)
 
-    return id;
+    return id
 
   }
 
-  async update(table, data) {
+  async update(table, data, id) {
 
     // get the current data
-    const curdata = await this.curData(table);
-    const id = data._id;
+    const curdata = await this.curData(table)
 
     // get array key based on _id
-    const index = curdata.findIndex(x => x._id === id);
-
-    curdata[index] = data;
+    const index = curdata.findIndex(x => x._id === id)
+    curdata[index] = data
 
     // save
-    return await this.save(table, curdata);
+    await this.save(table, curdata)
+
+    return id
 
   }
 
   async delete(table, id) {
 
     // get the current data
-    const curdata = await this.curData(table);
+    const curdata = await this.curData(table)
 
     // get array key based on _id
     const index = curdata.findIndex(x => x._id === id);
-
-    curdata.splice(index, 1);
+    const newdata = curdata.slice(0, index).concat(curdata.slice(index + 1, curdata.length))
 
     // save
-    return await this.save(table, curdata);
+    await this.save(table, newdata)
+
+    return id
 
   }
 
@@ -101,15 +102,15 @@ class S3DB {
       ContentType: 'application/json'
     };
 
-    return await this.s3Bucket.putObject(params).promise();
+    return await this.s3Bucket.putObject(params).promise()
 
   }
 
   generateId() {
-    var dt = new Date();
-    var now = dt.getFullYear() + ("0" + (dt.getMonth() + 1)).slice(-2) + ("0" + dt.getDate()).slice(-2);
-    var id = now + '-' + Math.floor(Math.random() * Math.floor(99999));
-    return id;
+    var dt = new Date()
+    var now = dt.getFullYear() + ("0" + (dt.getMonth() + 1)).slice(-2) + ("0" + dt.getDate()).slice(-2)
+    var id = now + '-' + Math.floor(Math.random() * Math.floor(99999))
+    return id
   }
 
 }
