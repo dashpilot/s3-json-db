@@ -1,12 +1,12 @@
 {
-  "name": "s3-json-db",
+  "name": "@dashpilot/s3-json-db",
   "version": "1.0.0",
   "description": "Use S3 as a simple json database and serverless API",
   "main": "index.js",
   "scripts": {
     "build": "npm install"
   },
-  "author": "",
+  "author": "Gerben Schmidt",
   "dependencies": {
     "aws-sdk": "^2.603.0"
   }
