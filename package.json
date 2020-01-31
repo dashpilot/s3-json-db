@@ -10,5 +10,14 @@
   "author": "Gerben Schmidt",
   "dependencies": {
     "aws-sdk": "^2.603.0"
-  }
+  },
+  "keywords": [
+    "s3",
+    "json",
+    "db",
+    "database",
+    "amazon",
+    "serverless",
+    "api"
+  ]
 }
