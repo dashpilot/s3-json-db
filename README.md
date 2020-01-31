@@ -40,4 +40,7 @@ db.list(table).then(function(data) {
 ```
 
 To retrieve all entries client-side:
-    {your_s3_url}/{bucket}/{s3_folder}/{table}.json
+
+```javascript
+{your_s3_url}/{bucket}/{s3_folder}/{table}.json
+```
