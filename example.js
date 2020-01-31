@@ -9,7 +9,6 @@ let data = {
 
 // insert
 db.insert(table, data).then(function(id) {
-
   console.log("created " + id);
 
   let data = {

@@ -26,7 +26,7 @@ class S3DB {
   async insert(table, data) {
 
     // get the current data
-    const curdata = await this.curData(table)
+    const curdata = await this.list(table)
 
     // generate a new id
     const id = this.generateId()
@@ -45,7 +45,7 @@ class S3DB {
   async update(table, data, id) {
 
     // get the current data
-    const curdata = await this.curData(table)
+    const curdata = await this.list(table)
 
     // get array key based on _id
     const index = curdata.findIndex(x => x._id === id)
@@ -61,7 +61,7 @@ class S3DB {
   async delete(table, id) {
 
     // get the current data
-    const curdata = await this.curData(table)
+    const curdata = await this.list(table)
 
     // get array key based on _id
     const index = curdata.findIndex(x => x._id === id);
@@ -75,7 +75,7 @@ class S3DB {
   }
 
 
-  async curData(table) {
+  async list(table) {
 
     var params = {
       Bucket: this.s3_bucket,
