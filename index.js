@@ -2,11 +2,12 @@ const AWS = require('aws-sdk')
 
 class S3DB {
 
-  constructor(s3_key, s3_secret, s3_bucket, s3_folder) {
+  constructor(s3_key, s3_secret, s3_bucket, s3_prefix = '', s3_acl = 'private') {
     this.s3_key = s3_key
     this.s3_secret = s3_secret
     this.s3_bucket = s3_bucket
-    this.s3_folder = s3_folder
+    this.s3_prefix = s3_prefix
+    this.s3_acl = s3_acl
 
     // Amazon S3
     AWS.config.update({
@@ -79,7 +80,7 @@ class S3DB {
 
     var params = {
       Bucket: this.s3_bucket,
-      Key: this.s3_folder + '/' + table + '.json'
+      Key: this.s3_prefix + table + '.json'
     };
 
     return await this.s3Bucket.getObject(params).promise()
@@ -108,8 +109,8 @@ class S3DB {
 
     // save
     var params = {
-      ACL: 'public-read',
-      Key: this.s3_folder + '/' + table + '.json',
+      ACL: this.s3_acl,
+      Key: this.s3_prefix + table + '.json',
       Body: JSON.stringify(data),
       ContentType: 'application/json'
     };
