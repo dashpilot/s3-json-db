@@ -26,10 +26,10 @@ class S3DB {
   async insert(table, data) {
 
     // get the current data
-    const curdata = await this.list(table)
+    const curdata = await this.get_all(table)
 
     // generate a new id
-    const id = this.generateId()
+    const id = this.generate_id()
     data._id = id
 
     // add the new data
@@ -45,7 +45,7 @@ class S3DB {
   async update(table, data, id) {
 
     // get the current data
-    const curdata = await this.list(table)
+    const curdata = await this.get_all(table)
 
     // get array key based on _id
     const index = curdata.findIndex(x => x._id === id)
@@ -61,7 +61,7 @@ class S3DB {
   async delete(table, id) {
 
     // get the current data
-    const curdata = await this.list(table)
+    const curdata = await this.get_all(table)
 
     // get array key based on _id
     const index = curdata.findIndex(x => x._id === id);
@@ -75,7 +75,7 @@ class S3DB {
   }
 
 
-  async list(table) {
+  async get_all(table) {
 
     var params = {
       Bucket: this.s3_bucket,
@@ -89,6 +89,18 @@ class S3DB {
       .catch(function(error) {
         return []
       })
+
+  }
+
+  async get(table, id) {
+
+    // get the current data
+    const curdata = await this.get_all(table)
+
+    // get array key based on _id
+    const data = curdata.find(x => x._id === id)
+
+    return data
 
   }
 
@@ -106,7 +118,7 @@ class S3DB {
 
   }
 
-  generateId() {
+  generate_id() {
     var dt = new Date()
     var now = dt.getFullYear() + ("0" + (dt.getMonth() + 1)).slice(-2) + ("0" + dt.getDate()).slice(-2)
     var id = now + '-' + Math.floor(Math.random() * Math.floor(99999))

@@ -8,7 +8,7 @@ let data = {
 }
 
 // insert
-db.insert(table, data).then(function(id) {
+db.insert(table, data).then(id => {
   console.log("created " + id);
 
   let data = {
@@ -18,11 +18,11 @@ db.insert(table, data).then(function(id) {
   }
 
   // update
-  db.update(table, data, id).then(function(id) {
+  db.update(table, data, id).then(id => {
     console.log("updated " + id);
 
     // delete
-    db.delete(table, id).then(function(id) {
+    db.delete(table, id).then(id => {
       console.log("deleted " + id);
     });
 

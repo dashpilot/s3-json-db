@@ -19,22 +19,27 @@ let data = {
 }
 
 // insert
-db.insert(table, data).then(function(id) {
+db.insert(table, data).then(id => {
   console.log("created " + id);
 });
 
 // update
-db.update(table, data, id).then(function(id) {
+db.update(table, data, id).then(id => {
   console.log("updated " + id);
 });
 
 // delete
-db.delete(table, id).then(function(id) {
+db.delete(table, id).then(id => {
   console.log("deleted " + id);
 });
 
-// list all entries
-db.list(table).then(function(data) {
+// get one entry by id
+db.get(table, id).then(data => {
+  console.log(data);
+});
+
+// get all entries
+db.get_all(table).then(data => {
   console.log(data);
 });
 ```
