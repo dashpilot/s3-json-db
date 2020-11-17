@@ -57,3 +57,6 @@ To retrieve all entries client-side (set s3_acl to "public-read"):
 ```javascript
 {your_s3_url}/{bucket}/{s3_prefix}/{table}.json
 ```
+
+# Press the :star: button
+Don't forget to press the :star: button to let me know I should continue improving this project.
