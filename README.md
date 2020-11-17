@@ -6,7 +6,7 @@ Use Amazon S3 as a simple JSON database and serverless API
 
 S3 JSON DB is a simple file-based JSON database for Amazon S3. It allows you to insert, update, retrieve and delete entries. All entries are stored on S3 as objects in a single json file, so you can also easily retrieve them from a Single Page Application or any server-side rendered app (without needing this module). You can use it to quickly prototype a serverless app or backend for your SPA.
 
-# Usage
+## Usage
 
 ```javascript
 const S3DB = require('s3-json-db');
@@ -44,7 +44,7 @@ db.get_all(table).then(data => {
 });
 ```
 
-# Configuration
+## Configuration
 
     s3_key (required): your S3 API key
     s3_secret (required): your S3 API secret
@@ -58,5 +58,5 @@ To retrieve all entries client-side (set s3_acl to "public-read"):
 {your_s3_url}/{bucket}/{s3_prefix}/{table}.json
 ```
 
-# Press the :star: button
+## Press the :star: button
 Don't forget to press the :star: button to let me know I should continue improving this project.
