@@ -1,6 +1,6 @@
 {
   "name": "@dashpilot/s3-json-db",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Use S3 as a simple json database and serverless API",
   "main": "index.js",
   "repository": "dashpilot/s3-json-db",
