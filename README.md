@@ -4,13 +4,13 @@ Use Amazon S3 as a simple JSON database and serverless API
 
 ## About
 
-S3 JSON DB is a simple file-based JSON database for Amazon S3. It allows you to insert, update, retrieve and delete entries. All entries are stored on S3 as objects in a single json file, so you can also easily retrieve them from a Single Page Application or any server-side rendered app (without needing this module). You can use it to quickly prototype a serverless app or backend for your SPA.
+S3 JSON DB is a simple file-based JSON database for Amazon S3. It allows you to insert, update, retrieve and delete entries. All entries are stored on S3 as objects in a single json file, so you can also easily retrieve them from a Single Page Application or any server-side rendered app (without needing this module). You can use it to quickly prototype a serverless app or backend for your SPA. Compatible with Amazon S3, Digitalocean Spaces, Linode Object Storage, BackBlaze B2, etc.
 
 ## Usage
 
 ```javascript
 const S3DB = require('s3-json-db');
-const db = new S3DB(s3_key, s3_secret, s3_bucket, s3_prefix, s3_acl);
+const db = new S3DB(s3_key, s3_secret, s3_bucket, s3_prefix, s3_acl, s3_endpoint);
 const table = 'entries';
 
 let data = {
@@ -51,6 +51,7 @@ db.get_all(table).then(data => {
     s3_bucket (required): your S3 bucket
     s3_prefix (optional): optional file prefix or subfolder (for the latter end with a slash). default "";
     s3_acl (optional): ACL (https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl). Default: "private", set to "public-read" if you want your data to be public (to use with a client-side app).
+    s3_endpoint (optional): change the endpoint if you use Digitalocean Spaces, Linode Object Storage, Backblaze B2, etc. Default: false.
 
 To retrieve all entries client-side (set s3_acl to "public-read"):
 
@@ -59,4 +60,5 @@ To retrieve all entries client-side (set s3_acl to "public-read"):
 ```
 
 ## Press the :star: button
+
 Don't forget to press the :star: button to let me know I should continue improving this project.

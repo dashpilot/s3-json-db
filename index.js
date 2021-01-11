@@ -2,18 +2,22 @@ const AWS = require('aws-sdk')
 
 class S3DB {
 
-  constructor(s3_key, s3_secret, s3_bucket, s3_prefix = '', s3_acl = 'private') {
+  constructor(s3_key, s3_secret, s3_bucket, s3_prefix = '', s3_acl = 'private', s3_endpoint = false) {
     this.s3_key = s3_key
     this.s3_secret = s3_secret
     this.s3_bucket = s3_bucket
     this.s3_prefix = s3_prefix
     this.s3_acl = s3_acl
 
-    // Amazon S3
-    AWS.config.update({
+    var s3_config = {
       accessKeyId: s3_key,
       secretAccessKey: s3_secret
-    });
+    }
+    if (s3_endpoint) {
+      const endpoint = new AWS.Endpoint(s3_endpoint);
+      s3_config.endpoint = endpoint
+    }
+    AWS.config.update(s3_config);
 
     this.s3Bucket = new AWS.S3({
       params: {
